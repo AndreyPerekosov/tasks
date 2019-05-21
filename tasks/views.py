@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 from tasks.models import TodoItem
-from tasks.forms import  TodoItemForm
+from tasks.forms import  TodoItemForm, TodoItemExportForm
 
 #импортируем классы обработчики
 from django.views import View
@@ -20,6 +20,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Q
+
+from django.views import View
 
 #5
 @login_required
