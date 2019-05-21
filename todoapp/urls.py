@@ -1,3 +1,4 @@
+from django.contrib.auth import views as auth_views
 """todoapp URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -24,5 +25,6 @@ urlpatterns = [
     path('tasks/', include('tasks.urls', namespace="tasks")),
     path('accounts/', include('accounts.urls')),
     path('admin/', admin.site.urls),
+    path('', auth_views.LoginView.as_view(), name='login'),
 ]
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
