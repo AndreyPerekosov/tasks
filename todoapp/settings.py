@@ -138,10 +138,10 @@ LOGIN_REDIRECT_URL = "tasks:list"
 
 #настройки почты
 if os.environ.get('APP_LOCATION') == 'heroku':
-    EMAIL_HOST = os.environ.get("EMAIL_HOST")
-    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+    EMAIL_HOST = "smtp.mail.ru"
+    EMAIL_HOST_USER = "perekosov.a@mail.ru"
     EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-    EMAIL_PORT = int(os.environ.get("EMAIL_PORT"))
+    EMAIL_PORT = 465
     EMAIL_USE_SSL = True
 else:
     EMAIL_HOST = 'smtp.gmail.com'

@@ -23,6 +23,11 @@ from django.db.models import Q
 
 from django.views import View
 
+from django.core.email import send_mail
+from django.conf import settings
+
+
+
 #5
 @login_required
 def index(request):
