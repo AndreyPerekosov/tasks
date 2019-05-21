@@ -5,6 +5,7 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 
 from accounts.forms import LoginForm, RegistrationForm, UserEditForm, ProfileEditForm
+from accounts.models import Profile
 
 
 class LoginView(View):
