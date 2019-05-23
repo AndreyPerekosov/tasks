@@ -13,7 +13,9 @@ urlpatterns = [
     path('complete/<int:uid>', views.complete_task, name='complete'),
     path('delete/<int:uid>', views.delete_task, name='delete'),
     #прописываем пути для классо обработчиков
-    path("list/", views.TaskListView.as_view(), name="list"),
+    #path("list/", views.TaskListView.as_view(), name="list"),
+    path("list/", views.tasks_by_tag, name="list"),
+    path("list/tag/<slug:tag_slug>", views.tasks_by_tag, name="list_by_tag"),
     path("create/", views.TaskCreateView.as_view(), name="create"),
     path("details/<int:pk>", views.TaskDetailsView.as_view(), name="details"),
     path("edit/<int:pk>", views.TaskEditView.as_view(), name="edit"),

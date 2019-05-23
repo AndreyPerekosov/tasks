@@ -10,8 +10,8 @@ from tasks.models import TodoItem
 class TodoItemForm(forms.ModelForm):
     class Meta:
         model = TodoItem
-        fields = ("description", "priority")
-        labels = {"description": "Описание", "priority": ""}
+        fields = ("description", "priority", "tags")
+        labels = {"description": "Описание", "priority": "", "tags": "тэги"}
 
 class TodoItemExportForm(forms.Form):
     prio_high = forms.BooleanField(

@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
 from tasks.models import TodoItem
 from tasks.forms import  TodoItemForm, TodoItemExportForm
@@ -26,6 +26,10 @@ from django.views import View
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from . import service
+from taggit.models import Tag, TaggedItem
+
+
 
 
 
@@ -73,6 +77,7 @@ class TaskCreateView(View):
             new_task = form.save(commit=False)
             new_task.owner = request.user
             new_task.save()
+            form.save_m2m()
             return redirect(reverse("tasks:list"))
 
         return self.my_render(request, form)
@@ -117,6 +122,21 @@ class TaskListView(LoginRequiredMixin, ListView):
         # if u.is_anonymous:
         #     return []
         return u.tasks.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        user_tasks = self.get_queryset()
+        
+        tags = []
+        
+        for t in user_tasks:
+            tags.append(list(t.tags.all()))
+        
+        context['tags'] = service.filter_tags(tags)
+        
+        return context
+
 #4.
 class TaskDetailsView(DetailView):
     model = TodoItem
@@ -174,3 +194,23 @@ class TaskExportView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         form = TodoItemExportForm()
         return render(request, "tasks/export.html", {"form": form})
+
+def tasks_by_tag(request, tag_slug=None):
+    u = request.user
+    tasks = TodoItem.objects.filter(owner=u).all()
+
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        tasks = tasks.filter(tags__in=[tag])
+    
+    all_tags = []
+    for t in tasks:
+        all_tags.append(list(t.tags.all()))
+    all_tags = service.filter_tags(all_tags)
+
+    return render(
+        request,
+        "tasks/list_by_tag.html",
+        {"tag": tag, "tasks": tasks, "all_tags": all_tags},
+    )
